@@ -1,4 +1,5 @@
 KnockoutTreeView
 ================
 
-First working copy
+Select your data by logical group with KnockoutTreeView!
+
