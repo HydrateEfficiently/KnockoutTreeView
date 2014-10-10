@@ -2,6 +2,8 @@
 
 Select your data by logical group with KnockoutTreeView!
 
+![Example](http://i.imgur.com/OKehckS.png "Example")
+
 ## Basic Use
 ```javascript
 var data = {
