@@ -2,11 +2,10 @@ define(function (require) {
 
 	var ko = require("knockout");
 
-	function getLevelIds(level, numberOfLevels) {
-		var maxLevel = numberOfLevels - 1;
+	function getLevelIds(level, levelsBelow) {
 		return [
 			level + "",
-			level === maxLevel ? "n" : "n-" + (maxLevel - level),
+			levelsBelow === 0 ? "n" : "n-" + levelsBelow,
 			"*"
 		];
 	}
@@ -50,26 +49,31 @@ define(function (require) {
 	}
 	
 	function TreeViewNode(data, options, level) {
-		if (isNaN(level)) {
-			level = 0;
-		}
+		var self = this;
 
-		var self = this,
-			levelIds = getLevelIds(level, options.levels),
+		this.level = isNaN(level) ? 0 : level;
+		this.children = ko.observableArray(ko.utils.arrayMap(data[options.parseOptions.children], function (child) {
+			return new TreeViewNode(child, options, self.level + 1);
+		}));
+
+		this.levelsBelow = 0;
+		this._forEachChild(function (child) {
+			self.levelsBelow = Math.max(self.levelsBelow, child.levelsBelow + 1);
+		});
+
+		var levelIds = getLevelIds(this.level, this.levelsBelow),
 			modelOptions = getModelOptions(levelIds, options.modelOptions),
 			model = createModel(modelOptions, data[options.parseOptions.nodeData]),
 			childrenData = data[options.parseOptions.children];
 
-		this.children = ko.observableArray(ko.utils.arrayMap(data[options.parseOptions.children], function (child) {
-			return new TreeViewNode(child, options, level + 1);
-		}));
+		
 		this.displayText = getDisplayText(model, modelOptions);
 
 		this.isLeaf = ko.computed(function () {
 			return self.children().length === 0;
 		});
 
-		this.expanded = ko.observable(level < options.levelsShown - 1);
+		this.expanded = ko.observable(this.level < options.levelsShown - 1);
 		this.collapsed = ko.computed(function () {
 			return !self.expanded();
 		});

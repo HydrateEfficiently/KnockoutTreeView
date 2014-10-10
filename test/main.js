@@ -1,11 +1,10 @@
 define(function (require) {
 
-	var testData = {"Children":[{"Children":[{"Children":[{"Children":[{"Children":[],"Item":{"ApplicationId":5,"RoundId":2,"AuthorId":2020249,"ProfileDepartmentId":9,"ApplicationType":0}}],"Item":{"Name":"School of Educational Studies and Leadership"}}],"Item":{"Name":"College of Education"}},{"Children":[{"Children":[{"Children":[],"Item":{"ApplicationId":4,"RoundId":2,"AuthorId":4046900,"ProfileDepartmentId":25,"ApplicationType":0}}],"Item":{"Name":"Civil and Natural Resources Engineering"}}],"Item":{"Name":"College of Engineering"}}],"Item":{"Name":"Option 1"}},{"Children":[{"Children":[{"Children":[{"Children":[],"Item":{"ApplicationId":3,"RoundId":2,"AuthorId":2173496,"ProfileDepartmentId":9,"ApplicationType":1}}],"Item":{"Name":"School of Educational Studies and Leadership"}}],"Item":{"Name":"College of Education"}}],"Item":{"Name":"Option 2"}}],"Item":{"Name":"Application Type"}};
-
 	var ko = require("knockout"),
-		TreeView = require("TreeView");
+		TreeView = require("TreeView"),
+		testData = require("../test/testdata");
 
-	function OrganisationalUnit(data) {
+	function Root(data) {
 		var self = this;
 		this.name = data.Name;
 		this.toString = function () {
@@ -13,26 +12,47 @@ define(function (require) {
 		};
 	}
 
-	function Application(data) {
+	function Region(data) {
 		var self = this;
-		this.authorId = data.AuthorId;
+		this.location = data.Location;
 		this.toString = function () {
-			return self.authorId;
+			return self.location;
+		};
+	}
+
+	function Branch(data) {
+		var self = this;
+		this.name = data.Name;
+		this.department = data.Department;
+		this.toString = function () {
+			return self.name + ", " + self.department;
+		};
+	}
+
+	function Employee(data) {
+		var self = this;
+		this.name = data.Name;
+		this.title = data.Title;
+		this.salary = data.Salary;
+		this.toString = function () {
+			return self.name + ", " + self.title + ", $" + self.salary;
 		};
 	}
 
 	function main() {
 		ko.applyBindings(new TreeView(testData, {
-			parseOptions: {
-				nodeData: "Item",
-				children: "Children"
-			},
 			modelOptions: {
 				"n": {
-					model: Application
+					model: Employee
+				},
+				"n-1" : {
+					model: Branch
 				},
 				"*": {
-					model: OrganisationalUnit
+					model: Region
+				},
+				"0": {
+					model: Root
 				}
 			}
 		}));
