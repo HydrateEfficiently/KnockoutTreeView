@@ -66,9 +66,11 @@ define(function (require) {
 			modelOptions = getModelOptions(levelIds, options.modelOptions),
 			parseOptions = modelOptions.parseOptions || options.parseOptions,
 			model = createModel(modelOptions, data[parseOptions.nodeData]),
-			childrenData = data[options.parseOptions.children];
+			childrenData = data[options.parseOptions.children],
+			contentTemplateId = modelOptions.contentTemplateId;
 
-		
+		this.model = model;
+		this.contentTemplateId = contentTemplateId || "tree-node-content-template";
 		this.displayText = getDisplayText(model, modelOptions);
 
 		this.isLeaf = ko.computed(function () {
