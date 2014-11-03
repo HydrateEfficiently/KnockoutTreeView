@@ -10,18 +10,23 @@
 </head>
 <body>
 	<div data-bind="treeView: employees"></div>
+	
 	<script type="text/html" id="tree-node">
 		<li>
 			<span data-bind="visible: !isLeaf()">
-				<img src="../test/plus.gif" data-bind="attr: { src: expanded() ? '../test/minus.gif' : '../test/plus.gif' }, click: toggleExpanded" />
+				<img src="/Package/Graphics/plus.gif" data-bind="attr: { src: expanded() ? '/Package/Graphics/minus.gif' : '/Package/Graphics/plus.gif' }, click: toggleExpanded" />
 			</span>
 			<input type="checkbox" data-bind="nullableChecked: isSelected" />
-			<span data-bind="text: displayText"></span>
-
-			<div data-bind="if: expanded">
-				<ul style="list-style-type: none; padding-left: 20px" data-bind="template: { name: 'tree-node', foreach: children }"></ul>
-			</div>
+			<span data-bind="template: { name: contentTemplateId, data: $data }"></span>
+			
 		</li>
+	</script>
+
+	<script type="text/html" id="tree-node-content-template">
+		<span data-bind="text: displayText"></span>
+		<div data-bind="if: expanded">
+			<ul style="list-style-type: none; padding-left: 20px" data-bind="template: { name: 'tree-node', foreach: children }"></ul>
+		</div>
 	</script>
 </body>
 </html>
