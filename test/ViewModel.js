@@ -2,6 +2,7 @@ define(function (require) {
 
 	var ko = require("knockout"),
 		TreeView = require("TreeView"),
+		// TreeView = require("../build/ko.treeview-0.1.debug"),
 		testData = require("../test/testdata");
 
 	function Root(data) {
