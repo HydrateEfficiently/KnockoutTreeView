@@ -93,9 +93,9 @@ define(function (require) {
 
 		var levelIds = getLevelIds(this.level, this.levelsBelow),
 			modelOptions = getModelOptions(levelIds, options.modelOptions),
-			model = createModel(modelOptions, data[options.parseOptions.nodeData]),
+			parseOptions = modelOptions.parseOptions || options.parseOptions,
+			model = createModel(modelOptions, data[parseOptions.nodeData]),
 			childrenData = data[options.parseOptions.children];
-
 		
 		this.displayText = getDisplayText(model, modelOptions);
 
@@ -194,6 +194,15 @@ define(function (require) {
 				};
 			}
 		};
+
+		var modelOptions;
+		for (var key in options.modelOptions) {
+			modelOptions = options.modelOptions[key];
+			if (modelOptions.parseOptions) {
+				modelOptions.parseOptions.nodeData = modelOptions.parseOptions.nodeData || options.parseOptions.nodeData;
+				modelOptions.parseOptions.children = modelOptions.parseOptions.children || options.parseOptions.children;
+			}
+		}
 
 		options.levelsShown = isNaN(options.levelsShown) ? 2 : options.levelsShown;
 

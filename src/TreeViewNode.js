@@ -64,7 +64,8 @@ define(function (require) {
 
 		var levelIds = getLevelIds(this.level, this.levelsBelow),
 			modelOptions = getModelOptions(levelIds, options.modelOptions),
-			model = createModel(modelOptions, data[options.parseOptions.nodeData]),
+			parseOptions = modelOptions.parseOptions || options.parseOptions,
+			model = createModel(modelOptions, data[parseOptions.nodeData]),
 			childrenData = data[options.parseOptions.children];
 
 		
