@@ -26,6 +26,20 @@
 		this.root = new TreeViewNode(data, options);
 	}
 
+	ko.bindingHandlers.treeView = {
+		init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+			var root = allBindings().treeView.root,
+				internalList = document.createElement("ul");
+			internalList.style["list-style-type"] = "none";
+			internalList.style["margin-top"] = "0px";
+			internalList.style["margin-top"] = "0px";
+			internalList.style.padding = "0px";
+			element.appendChild(internalList);
+			ko.applyBindingsToNode(internalList, { template: { name: 'tree-node', data: root } });
+			return { controlsDescendantBindings: true };
+		}
+	};
+
 	return TreeView;
 
 });

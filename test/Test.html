@@ -3,11 +3,13 @@
 	<script type="text/javascript" src="../src/lib/require.js"></script>
 	<script type="text/javascript" src="requireconfig.js"></script>
 	<script type="text/javascript">
-		require(["../test/main"], function (main) { main(); });
+		require(["knockout", "../test/ViewModel"], function (ko, ViewModel) {
+			ko.applyBindings(new ViewModel());
+		});
 	</script>
 </head>
 <body>
-	<ul style="list-style-type: none; padding: 0px; margin-top: 3px; margin-bottom: 0px;" data-bind="template: { name: 'tree-node', data: root }"></ul>
+	<div data-bind="treeView: employees"></div>
 	<script type="text/html" id="tree-node">
 		<li>
 			<span data-bind="visible: !isLeaf()">
